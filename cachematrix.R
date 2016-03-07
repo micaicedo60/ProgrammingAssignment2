@@ -1,15 +1,42 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This is my work for the assignment in week 3
+##
+## I did a simple adaptation of the codes given in the examples
+## Just changed x 0 numeric for x = matrix, and the function call mean 
+## for solve. Also changed the names of setmean and getmean for setinv (inv for inverse) 
+## and getinv
+##
+##	Mario I. Caicedo
 
-## Write a short comment describing this function
+# MakeCacheMatrix creates a list of "places" in which to look
+# for inverse of the matrix to invert (letś say x)
 
 makeCacheMatrix <- function(x = matrix()) {
+	m <- NULL
+        	set <- function(y) {
+                	x <<- y
+               	 m <<- NULL
+        	}
+        get <- function() x
+        setinv <- function(solve) m <<- solve
+        getinv <- function() m
+        list(set = set, get = get,
+             setinv = setinv,
+             getinv = getinv)
+}	
 
-}
-
-
-## Write a short comment describing this function
+## This function reads  the list (output from MakeCacheMatrix)
+## and returns the inverse (x^{-1}) of x 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        cacheSolve <- function(x, ...) {
+        	m <- x$getinv()
+        	if(!is.null(m)) {
+                	message("getting cached data")
+                	return(m)
+        	}
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setinv(m)
+        m
 }
+
